@@ -12,7 +12,7 @@ const char* password = "";          // Modifica con la tua password
 // Credenziali server MQTT
 const char* mqttServer = "a1cxrn2jmoxkss-ats.iot.us-east-1.amazonaws.com";
 const int mqttPort = 8883;
-const char* mqttTopic = "air_quality/data";
+const char* mqttTopic = "test_project";
 const char* mqttUsername = "admin";
 const char* mqttPassword = "password";
 const char* ESPname = "AirQualitySensorONE";

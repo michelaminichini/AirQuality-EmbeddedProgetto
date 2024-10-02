@@ -79,31 +79,3 @@ app.get("/", (req, res) => {
     res.json(response);
   });
 });
-
-// Rotta POST per impostare lo stato del sensore ESP
-app.post("/set-esp-status", async (req, res) => {
-  try {
-    const { status, ESPname } = req.body;
-
-    if (!status || !ESPname) {
-      res.status(400).send("È necessario specificare sia 'status' che 'ESPname'.");
-      return;
-    }
-
-    const command = `sh ./mqtt-subscription/publisher.sh ${status}-${ESPname}`;
-
-    if (status === "disable" || status === "enabled") {
-      console.log(`Esecuzione comando: ${command}`);
-    } else {
-      res.status(400).send('Lo stato deve essere "disable" o "enabled".');
-      return;
-    }
-
-    // Esegui il comando per inviare il messaggio MQTT
-    await exec(command);
-    res.status(200).send(`Stato del sensore ${ESPname} aggiornato con successo.`);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Errore nell'aggiornamento dello stato del sensore.");
-  }
-});
