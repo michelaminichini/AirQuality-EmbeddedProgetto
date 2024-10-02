@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "author": "Michela",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 43.1, "left": -187.4, "attrs": {} },
+    {
+      "type": "wokwi-mq135",
+      "id": "mq135",
+      "top": -31.9,
+      "left": -372.5,
+      "attrs": { "value": "400" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledGood",
+      "top": 34.8,
+      "left": 51.8,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledModerate",
+      "top": 34.8,
+      "left": 13.4,
+      "attrs": { "color": "yellow" }
+    },
+    { "type": "wokwi-led", 
+      "id": "ledBad", 
+      "top": 34.8, 
+      "left": -25, 
+      "attrs": { "color": "red" } 
+      }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "mq135:VCC", "esp:VIN", "red", [ "v0" ] ],
+    [ "mq135:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "mq135:OUT", "esp:D2", "yellow", [ "v0" ] ],
+    [ "ledGood:A", "esp:D18", "green", [ "v0" ] ],
+    [ "ledModerate:A", "esp:D19", "yellow", [ "v0" ] ],
+    [ "ledBad:A", "esp:D21", "red", [ "v0" ] ]
+  ],
+  "serialMonitor": { "display": "terminal", "newline": "lf" },
+  "dependencies": {}
+}
