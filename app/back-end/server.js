@@ -23,14 +23,14 @@ app.listen(port, hostname, () => {
 
 // MQTT client configuration
 const mqttOptions = {
-  host: "a3gozzilrkv83v-ats.iot.us-east-1.amazonaws.com",  // Inserisci il tuo MQTT broker (AWS o altro)
+  host: "a1cxrn2jmoxkss-ats.iot.us-east-1.amazonaws.com",
   port: 8883,
   protocol: "mqtts",
-  username: "admin",      // Username MQTT (modifica se necessario)
-  password: "password",   // Password MQTT (modifica se necessario)
-  ca: fs.readFileSync('./mqtt-subscription/secrets/rootCA.pem'),
-  cert: fs.readFileSync('./mqtt-subscription/secrets/cert.crt'),
-  key: fs.readFileSync('./mqtt-subscription/secrets/private.key')
+  username: "admin",
+  password: "password",
+  ca: fs.readFileSync('./mqtt-subscription/Mosquitto/certs/rootCA.pem'),
+  cert: fs.readFileSync('./mqtt-subscription/Mosquitto/certs/cert.crt'),
+  key: fs.readFileSync('./mqtt-subscription/Mosquitto/certs/private.key')
 };
 
 // Connessione MQTT
@@ -39,9 +39,9 @@ const mqttClient = mqtt.connect(mqttOptions);
 // Controlla se la connessione è attiva
 mqttClient.on('connect', () => {
   console.log("Connesso al broker MQTT!");
-  mqttClient.subscribe("air_quality/data", (err) => {
+  mqttClient.subscribe("test_project", (err) => {
     if (!err) {
-      console.log("Iscritto al topic 'air_quality/data'");
+      console.log("Iscritto al topic 'test_project'");
     }
   });
 });
