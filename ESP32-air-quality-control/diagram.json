@@ -5,42 +5,63 @@
   "parts": [
     { "type": "wokwi-esp32-devkit-v1", "id": "esp", "top": 43.1, "left": -187.4, "attrs": {} },
     {
-      "type": "wokwi-mq135",
-      "id": "mq135",
-      "top": -31.9,
-      "left": -372.5,
-      "attrs": { "value": "400" }
-    },
-    {
       "type": "wokwi-led",
       "id": "ledGood",
-      "top": 34.8,
+      "top": -22.8,
       "left": 51.8,
       "attrs": { "color": "green" }
     },
     {
       "type": "wokwi-led",
       "id": "ledModerate",
-      "top": 34.8,
+      "top": -22.8,
       "left": 13.4,
       "attrs": { "color": "yellow" }
     },
-    { "type": "wokwi-led", 
-      "id": "ledBad", 
-      "top": 34.8, 
-      "left": -25, 
-      "attrs": { "color": "red" } 
-      }
+    {
+      "type": "wokwi-led",
+      "id": "ledBad",
+      "top": -22.8,
+      "left": -25,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "resistorGood",
+      "top": 62.4,
+      "left": 57.05,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "resistorModerate",
+      "top": 62.4,
+      "left": 9.05,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "resistorBad",
+      "top": 62.4,
+      "left": -29.35,
+      "rotate": 90,
+      "attrs": { "value": "220" }
+    }
   ],
   "connections": [
     [ "esp:TX0", "$serialMonitor:RX", "", [] ],
     [ "esp:RX0", "$serialMonitor:TX", "", [] ],
-    [ "mq135:VCC", "esp:VIN", "red", [ "v0" ] ],
-    [ "mq135:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "mq135:OUT", "esp:D2", "yellow", [ "v0" ] ],
-    [ "ledGood:A", "esp:D18", "green", [ "v0" ] ],
-    [ "ledModerate:A", "esp:D19", "yellow", [ "v0" ] ],
-    [ "ledBad:A", "esp:D21", "red", [ "v0" ] ]
+    [ "resistorGood:1", "esp:D18", "green", [ "v0" ] ],
+    [ "resistorModerate:1", "esp:D19", "yellow", [ "v0" ] ],
+    [ "resistorBad:1", "esp:D21", "red", [ "v0" ] ],
+    [ "resistorGood:2", "ledGood:A", "green", [ "v0" ] ],
+    [ "resistorModerate:2", "ledModerate:A", "yellow", [ "v0" ] ],
+    [ "resistorBad:2", "ledBad:A", "red", [ "v0" ] ],
+    [ "esp:GND.1", "ledBad:C", "black", [ "h76.5", "v-115.3" ] ],
+    [ "esp:GND.1", "ledModerate:C", "black", [ "h0" ] ],
+    [ "esp:GND.2", "ledGood:C", "black", [ "h0" ] ]
   ],
   "serialMonitor": { "display": "terminal", "newline": "lf" },
   "dependencies": {}

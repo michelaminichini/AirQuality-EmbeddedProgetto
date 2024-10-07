@@ -3,19 +3,17 @@
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
 
-#define AirQualityPin 34 // Pin collegato al sensore MQ-135 (può essere ignorato per la simulazione)
-
 // Credenziali Wi-Fi
-const char* ssid = "WokWi-GUEST";  // Modifica con il tuo SSID
+const char* ssid = "Wokwi-GUEST";  // Modifica con il tuo SSID
 const char* password = "";          // Modifica con la tua password
 
 // Credenziali server MQTT
 const char* mqttServer = "a1cxrn2jmoxkss-ats.iot.us-east-1.amazonaws.com";
 const int mqttPort = 8883;
 const char* mqttTopic = "test_project";
-const char* mqttUsername = "admin";
+const char* mqttUsername = "michela";
 const char* mqttPassword = "password";
-const char* ESPname = "AirQualitySensorONE";
+const char* ESPname = "AirQualitySensor";
 
 // Certificati AWS (da sostituire con i tuoi certificati reali)
 static const char AWS_CERT_CA[] PROGMEM = R"EOF(
@@ -41,9 +39,9 @@ unsigned long previousMillis = 0;
 const long interval = 1000;
 
 // Pin LED
-#define LED_GREEN_PIN 12 // Pin per LED verde
-#define LED_YELLOW_PIN 14 // Pin per LED giallo
-#define LED_RED_PIN 13 // Pin per LED rosso
+#define LED_GREEN_PIN 18 // Pin per LED verde
+#define LED_YELLOW_PIN 19 // Pin per LED giallo
+#define LED_RED_PIN 21 // Pin per LED rosso
 
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -53,6 +51,7 @@ PubSubClient client(espClient);
 char msg[MSG_BUFFER_SIZE];
 
 int airQualityValue;  // Valore di qualità dell'aria simulato
+
 
 // Funzione per la connessione WiFi
 void connectWiFi() {
@@ -71,18 +70,41 @@ void connectWiFi() {
 void connectMQTT() {
   while (!client.connected()) {
     Serial.print("Connecting to MQTT...");
+
+    // Imposta i certificati per la connessione sicura
+    espClient.setCACert(AWS_CERT_CA); // Certificato CA
+    espClient.setCertificate(AWS_CERT_CRT); // Certificato del dispositivo
+    espClient.setPrivateKey(AWS_CERT_PRIVATE); // Chiave privata del dispositivo
+
+    // Genera un ID client casuale
     String clientId = "ESP32Client-" + String(random(0xffff), HEX);
-    if (client.connect(clientId.c_str(), mqttUsername, mqttPassword)) {
+
+    // Tentativo di connessione
+    if (client.connect(clientId.c_str())) { // Non usare username e password qui
       Serial.println("Connected to MQTT.");
-      client.subscribe(mqttTopic);
+      client.subscribe(mqttTopic); // Iscrivi al topic
     } else {
       Serial.print("Failed, rc=");
-      Serial.print(client.state());
+      Serial.print(client.state()); // Stampa il codice di errore
+
+      // Debugging dettagliato
+      Serial.print(" - Error message: ");
+      if (client.state() == -2) {
+        Serial.println("MQTT Connection Timeout or DNS failure (check broker URL)");
+      } else if (client.state() == -1) {
+        Serial.println("MQTT Connection Refused");
+      } else if (client.state() == -4) {
+        Serial.println("Server closed connection");
+      } else {
+        Serial.println("Unknown error");
+      }
+
       Serial.println(" retrying in 3 seconds.");
       delay(3000);
     }
   }
 }
+
 
 // Funzione di callback per messaggi in arrivo (MQTT)
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -151,26 +173,27 @@ void handleLEDs() {
   }
 }
 
+
+// All'interno del setup()
 void setup() {
   Serial.begin(115200);
+
+  // Connessione WiFi
+  connectWiFi();
+
+  //START MQTT init
+  espClient.setCACert(AWS_CERT_CA);
+  espClient.setCertificate(AWS_CERT_CRT);
+  espClient.setPrivateKey(AWS_CERT_PRIVATE);
+  client.setServer(mqttServer, mqttPort);
+  client.setCallback(callback);
+  //END MQTT init
 
   // Configurazione dei pin dei LED come uscite
   pinMode(LED_GREEN_PIN, OUTPUT);
   pinMode(LED_YELLOW_PIN, OUTPUT);
   pinMode(LED_RED_PIN, OUTPUT);
 
-  // Connessione WiFi
-  connectWiFi();
-
-  // Impostazioni MQTT
-  espClient.setCACert(AWS_CERT_CA);
-  espClient.setCertificate(AWS_CERT_CRT);
-  espClient.setPrivateKey(AWS_CERT_PRIVATE);
-  client.setServer(mqttServer, mqttPort);
-  client.setCallback(callback);
-
-  // Pin setup (non più necessario per la simulazione)
-  pinMode(AirQualityPin, INPUT);
 
   // Genera un valore iniziale casuale per la qualità dell'aria
   airQualityValue = simulateAirQuality();

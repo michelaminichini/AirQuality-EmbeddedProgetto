@@ -10,7 +10,7 @@ const DataComponent = () => {
     const fetchData = async () => {
       try {
         // Effettua la richiesta HTTP al server (modifica l'URL in base alla tua configurazione)
-        const response = await fetch("http://localhost:7000/air_quality");
+        const response = await fetch("http://localhost:7000/");
         if (!response.ok) {
           throw new Error(`Network response was not ok: ${response.status}`);
         }
