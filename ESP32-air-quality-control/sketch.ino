@@ -34,9 +34,10 @@ static const char AWS_CERT_PRIVATE[] PROGMEM = R"KEY(
 -----END RSA PRIVATE KEY-----
 )KEY";
 
+
 // Variabili di temporizzazione
 unsigned long previousMillis = 0;
-const long interval = 1000;
+const long interval = 5000;
 
 // Pin LED
 #define LED_GREEN_PIN 18 // Pin per LED verde
@@ -118,17 +119,17 @@ void callback(char* topic, byte* payload, unsigned int length) {
 // Funzione che restituisce una descrizione della qualità dell'aria
 String getAirQualityDescription(int airQualityValue) {
   if (airQualityValue <= 50) {
-    return "Buona qualità dell'aria";
+    return "Good air quality";
   } else if (airQualityValue <= 100) {
-    return "Qualità dell'aria moderata";
+    return "Moderate air quality";
   } else if (airQualityValue <= 150) {
-    return "Qualità dell'aria insalubre per gruppi sensibili";
+    return "Unhealthy air quality for sensitive groups";
   } else if (airQualityValue <= 200) {
-    return "Qualità dell'aria insalubre";
+    return "Unhealthy air quality";
   } else if (airQualityValue <= 300) {
-    return "Qualità dell'aria molto insalubre";
+    return "Very unhealthy air quality";
   } else {
-    return "Qualità dell'aria pericolosa";
+    return "Dangerous air quality";
   }
 }
 
@@ -144,17 +145,25 @@ void publishAirQualityData() {
 
   // Crea l'oggetto JSON
   data["ESPname"] = ESPname;
-  data["air_quality"] = airQualityValue;  // Valore simulato del sensore
-  data["description"] = getAirQualityDescription(airQualityValue);  // Aggiunta della descrizione
+  data["airQuality"] = airQualityValue;  
+  data["description"] = getAirQualityDescription(airQualityValue);  
 
   // Serializza i dati JSON
   serializeJson(data, jsonBuffer);
 
   // Invia i dati al topic MQTT
+  //client.publish(mqttTopic, jsonBuffer);
+  //Serial.println("Published air quality data: ");
+  //Serial.println(jsonBuffer);
+  
+  Serial.println("Publishing data...");
   client.publish(mqttTopic, jsonBuffer);
-  Serial.println("Published air quality data: ");
+  Serial.println("Data published: ");
   Serial.println(jsonBuffer);
+
 }
+
+
 
 // Funzione per gestire i LED in base alla qualità dell'aria
 void handleLEDs() {
