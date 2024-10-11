@@ -15,7 +15,7 @@ Host endpoint: a1cxrn2jmoxkss-ats.iot.us-east-1.amazonaws.com
 
 ## Perchè viene utilizzata una EC2?
 L'utilizzo di un'istanza EC2 su AWS ha rappresentato una scelta strategica per il progetto. Questa soluzione ha permesso di ospitare il broker MQTT in un ambiente cloud scalabile e flessibile. Eliminando la necessità di gestire un'infrastruttura locale, la configurazione della rete è stata semplificata notevolmente. Inoltre, la connessione diretta tra l'emulatore ESP32 e il broker MQTT sulla VM ha garantito una comunicazione efficiente e affidabile. La scelta del cloud ha offerto la possibilità di accedere ai dati e di gestire il sistema da qualsiasi luogo con una connessione internet, facilitando lo sviluppo e il testing.
-È possibile consultare la documentazione AWS per l'inizializzazione di un server MQTT su istanza EC2 al link.
+È possibile consultare la documentazione AWS per l'inizializzazione di un server MQTT su istanza EC2 al [link](https://aws.amazon.com/it/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/).
 
 ## Connessione al server
 Per collegarsi al server MQTT, ogni dispositivo deve fornire delle credenziali uniche (nome utente e password) e presentare tre certificati digitali. Questi certificati, che si trovano in una cartella detta "secrets", servono a verificare l'identità del dispositivo e a proteggere la comunicazione da accessi non autorizzati e manomissioni.
