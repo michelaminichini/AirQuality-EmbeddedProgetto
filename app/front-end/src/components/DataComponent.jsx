@@ -12,18 +12,17 @@ const DataComponent = () => {
       try {
         const response = await fetch("http://localhost:7000/");
         if (!response.ok) {
-          throw new Error(`Network response was not ok: ${response.status}`);
+          throw new Error(`Network response was not okay: ${response.status}`);
         }
         const responseData = await response.json();
 
-        // Assicurati che ci siano dati
         if (responseData.items) {
           // Parsing dei dati ricevuti
           const parsedData = responseData.items.map((item) => ({
             ESPname: item.ESPname,
             airQuality: item.airQuality,
             description: item.description,
-            timestamp: new Date().toISOString() // Aggiungi un timestamp
+            timestamp: new Date().toISOString() // Aggiunge un timestamp
           }));
 
           setData(parsedData);
@@ -45,7 +44,7 @@ const DataComponent = () => {
       updatedMap.set(item.ESPname, item); // Aggiorna o aggiunge il messaggio
     });
 
-    setUpdatedMessages(Array.from(updatedMap.values())); // Converti la mappa in array
+    setUpdatedMessages(Array.from(updatedMap.values())); // Converte la mappa in array
   }, [data]);
 
   // Funzione per determinare il messaggio basato sul valore della qualità dell'aria
@@ -55,20 +54,19 @@ const DataComponent = () => {
     if (airQualityValue <= 150) return "Unhealthy air quality for sensitive groups";
     if (airQualityValue <= 200) return "Unhealthy air quality";
     if (airQualityValue <= 300) return "Very unhealthy air quality";
-    return "Dangerous air quality";
+    return "Dangerous air quality"; // se il valore supera 301 (con un massimo di 400)
   };
 
   // Funzione per determinare la posizione della lancetta
   const getNeedlePosition = (airQualityValue) => {
     const maxRotation = 180; // Rotazione massima di 180 gradi
     const maxValue = 400; // Valore massimo per la qualità dell'aria
-    //const minValue = 0; 
     const clampedValue = Math.min(Math.max(airQualityValue, 0), maxValue);  // Limita il valore entro il range [0, maxValue]
 
     // Calcola la posizione della lancetta
     const rotation = (clampedValue / maxValue) * maxRotation;
 
-    // Aggiungi 90 gradi per iniziare dalla posizione corretta (sinistra del semicerchio)
+    // Aggiungere 90 gradi per iniziare dalla posizione corretta (sinistra del semicerchio)
     const adjustedRotation = rotation - 90;
 
     console.log("Rotazione calcolata:", adjustedRotation);
@@ -81,26 +79,13 @@ const DataComponent = () => {
 
   return (
     <div className="App">
-      <h2>Sistema di Monitoraggio della Qualità dell'Aria</h2>
-      <p>Valore attualmente rilevato: {airQualityValue}</p>
+      <h2>Air Quality Monitoring System</h2>
+      <p>Currently measured value: {airQualityValue}</p>
 
-      {/* Usa il GaugeChart qui */}
+      {/* Uso di GaugeChart */}
       <GaugeChart airQuality={airQualityValue} />
 
       <p>{renderAirQualityMessage(airQualityValue)}</p>
-
-      {/* <div>
-        <h3>Ultimi dati ricevuti:</h3>
-        {updatedMessages.map((item, index) => (
-          <div key={index}>
-            <p><strong>Timestamp:</strong> {item.timestamp}</p>
-            <p><strong>ESP Name:</strong> {item.ESPname}</p>
-            <p><strong>Air Quality Value:</strong> {item.airQuality}</p>
-            <p><strong>Description:</strong> {item.description}</p>
-            <hr />
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };

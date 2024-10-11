@@ -21,15 +21,6 @@ const cleanString = (str) => {
   return str.replace(/[\u0000-\u001F\u007F-\u009F]/g, '').trim();
 };
 
-// // Funzione per scrivere dati nel file con codifica UTF-8
-// const writeDataToFile = (data) => {
-//   fs.appendFile(outputFile, data + '\n', { encoding: 'utf8' }, (err) => {
-//     if (err) {
-//       console.error('Errore nella scrittura nel file:', err);
-//     }
-//   });
-// };
-
 // Funzione per decodificare i dati
 const decodeData = (data) => {
   let decodedData;
@@ -43,35 +34,33 @@ const decodeData = (data) => {
     try {
       decodedData = iconv.decode(data, 'utf-8');
     } catch (e) {
-      console.error('Errore nel decoding dei dati in UTF-8:', e);
+      console.error('Error in decoding data in UTF-8:', e);
       return null; // Ritorna null se non riesce a decodificare
     }
   }
-
   return decodedData;
 };
 
-// Uso nella tua funzione di lettura
 app.get("/", (req, res) => {
   fs.readFile(outputFile, null, (err, data) => {
     if (err) {
-      console.error('Errore nella lettura del file:', err);
-      return res.status(500).send("Errore nel server");
+      console.error('Error reading file:', err);
+      return res.status(500).send("Server error");
     }
 
     // Decodifica i dati letti
     const decodedData = decodeData(data);
 
     if (!decodedData) {
-      return res.status(500).send("Errore nel decoding dei dati");
+      return res.status(500).send("Error in data decoding");
     }
 
-    // Ora puoi procedere a gestire decodedData come JSON
+    // Gestire decodedData come JSON
     const rows = decodedData.split("\n").map(cleanString).filter(row => row !== "");
     
-    // Rimuovi "test_project" e crea un array di oggetti JSON
+    // Rimuovere "test_project" e crea un array di oggetti JSON
     const jsonItems = rows.map(row => {
-      const jsonString = row.replace(/^test_project\s*/, ""); // Rimuovi "test_project" dall'inizio
+      const jsonString = row.replace(/^test_project\s*/, "");
       return jsonString;
     });
 
@@ -83,10 +72,10 @@ app.get("/", (req, res) => {
     try {
       responseJson = JSON.parse(stringJson);
     } catch (error) {
-      console.log("Errore nel parsing della stringa JSON:", error.message);
+      console.log("Error in parsing the JSON string:", error.message);
     }
 
-    console.log("response:", responseJson);
+    console.log("Response:", responseJson);
     res.send(responseJson);
   });
 });

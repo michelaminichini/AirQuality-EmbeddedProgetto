@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 
-// Registriamo gli elementi di Chart.js
+// Registrazione degli elementi di Chart.js
 Chart.register(ArcElement, Tooltip, Legend);
 
 const GaugeChart = ({ airQuality }) => {
@@ -29,11 +29,11 @@ const GaugeChart = ({ airQuality }) => {
 
   const options = {
     rotation: -90, // Ruota il grafico di -90 gradi per farlo partire da sinistra
-    circumference: 180, // Mostra solo la metà superiore
+    circumference: 180, // Mostra solo la metà superiore (forma a mezzo cerchio)
     cutout: '80%', // Lascia spazio nel centro per renderlo realistico
     plugins: {
       legend: {
-        display: false // Rimuovi la leggenda
+        display: false // Rimuovere la legenda
       }
     }
   };
