@@ -1,4 +1,4 @@
-# AirQuality-EmbeddedProgetto <img src="images/logo-app.png" alt="Logo" style="float: right; width: 120px;">
+# AirQuality-EmbeddedProgetto <img src="images/logo.png" alt="Logo" style="float: right; margin-top: -40px; margin-right: 10px; width: 120px;">
 
 ## Traccia
 Questo progetto si concentra sul monitoraggio della qualità dell'aria. Al posto di utilizzare sensori fisici, i dati vengono generati in modo casuale per simulare i livelli di inquinamento atmosferico. Ogni 5 secondi, viene prodotto un valore numerico randomico all'interno di un intervallo predefinito, permettendo così di classificare la qualità dell'aria in diverse categorie. Gli utenti possono visualizzare questi dati tramite un'app web, in cui è presente un contatore che consente di visualizzare in modo semplice e chiaro i risultati. Per realizzare il progetto, è stato usato un ESP32, un microcontrollore, a cui sono stati collegati 3 LED (rosso, giallo, verde) in modo da fornire un'indicazione visiva immediata della qualità dell'aria in tempo reale.
