@@ -4,8 +4,8 @@
 #include <PubSubClient.h>
 
 // Credenziali Wi-Fi
-const char* ssid = "Wokwi-GUEST";  // Modifica con il tuo SSID
-const char* password = "";          // Modifica con la tua password
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 // Credenziali server MQTT
 const char* mqttServer = "a1cxrn2jmoxkss-ats.iot.us-east-1.amazonaws.com";
@@ -15,7 +15,7 @@ const char* mqttUsername = "michela";
 const char* mqttPassword = "password";
 const char* ESPname = "AirQualitySensor";
 
-// Certificati AWS (da sostituire con i tuoi certificati reali)
+// Certificati AWS
 static const char AWS_CERT_CA[] PROGMEM = R"EOF(
 -----BEGIN CERTIFICATE-----
 <rootCA.pem>
@@ -72,7 +72,7 @@ void connectMQTT() {
   while (!client.connected()) {
     Serial.print("Connecting to MQTT...");
 
-    // Imposta i certificati per la connessione sicura
+    // Imposta certificati per la connessione sicura
     espClient.setCACert(AWS_CERT_CA); // Certificato CA
     espClient.setCertificate(AWS_CERT_CRT); // Certificato del dispositivo
     espClient.setPrivateKey(AWS_CERT_PRIVATE); // Chiave privata del dispositivo
@@ -81,9 +81,9 @@ void connectMQTT() {
     String clientId = "ESP32Client-" + String(random(0xffff), HEX);
 
     // Tentativo di connessione
-    if (client.connect(clientId.c_str())) { // Non usare username e password qui
+    if (client.connect(clientId.c_str())) {
       Serial.println("Connected to MQTT.");
-      client.subscribe(mqttTopic); // Iscrivi al topic
+      client.subscribe(mqttTopic); // Iscrizione al topic
     } else {
       Serial.print("Failed, rc=");
       Serial.print(client.state()); // Stampa il codice di errore
@@ -152,9 +152,6 @@ void publishAirQualityData() {
   serializeJson(data, jsonBuffer);
 
   // Invia i dati al topic MQTT
-  //client.publish(mqttTopic, jsonBuffer);
-  //Serial.println("Published air quality data: ");
-  //Serial.println(jsonBuffer);
   
   Serial.println("Publishing data...");
   client.publish(mqttTopic, jsonBuffer);
