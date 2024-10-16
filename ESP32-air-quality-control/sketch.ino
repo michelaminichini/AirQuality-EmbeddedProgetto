@@ -37,7 +37,7 @@ static const char AWS_CERT_PRIVATE[] PROGMEM = R"KEY(
 
 // Variabili di temporizzazione
 unsigned long previousMillis = 0;
-const long interval = 5000;
+const long interval = 9000;
 
 // Pin LED
 #define LED_GREEN_PIN 18 // Pin per LED verde
