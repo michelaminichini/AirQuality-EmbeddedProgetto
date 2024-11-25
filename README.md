@@ -2,7 +2,7 @@
 
 # AirQuality-EmbeddedProgetto
 ## Traccia
-Questo progetto si concentra sul monitoraggio della qualità dell'aria. Al posto di utilizzare sensori fisici, i dati vengono generati in modo casuale per simulare i livelli di inquinamento atmosferico. Ogni 5 secondi, viene prodotto un valore numerico randomico all'interno di un intervallo predefinito, permettendo così di classificare la qualità dell'aria in diverse categorie. Gli utenti possono visualizzare questi dati tramite un'app web, in cui è presente un contatore che consente di visualizzare in modo semplice e chiaro i risultati. Per realizzare il progetto, è stato usato un ESP32, un microcontrollore, a cui sono stati collegati 3 LED (rosso, giallo, verde) in modo da fornire un'indicazione visiva immediata della qualità dell'aria in tempo reale.
+Questo progetto si concentra sul monitoraggio della qualità dell'aria. Al posto di utilizzare sensori fisici, i dati vengono generati in modo casuale per simulare i livelli di inquinamento atmosferico. Ogni 9 secondi, viene prodotto un valore numerico randomico all'interno di un intervallo predefinito, permettendo così di classificare la qualità dell'aria in diverse categorie. Gli utenti possono visualizzare questi dati tramite un'app web, in cui è presente un contatore che consente di visualizzare in modo semplice e chiaro i risultati. Per realizzare il progetto, è stato usato un ESP32, un microcontrollore, a cui sono stati collegati 3 LED (rosso, giallo, verde) in modo da fornire un'indicazione visiva immediata della qualità dell'aria in tempo reale.
 
 ## Suddivisione cartelle
 - ESP32-air-quality-control : contiene lo zip del progetto su WokWi, includendo file come "sketch.ino" per il funzionamento del circuito, le librerie e il diagramma (.json).
