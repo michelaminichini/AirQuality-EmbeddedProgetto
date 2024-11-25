@@ -48,8 +48,8 @@ WiFiClientSecure espClient;
 PubSubClient client(espClient);
 
 // Buffer per il messaggio MQTT
-#define MSG_BUFFER_SIZE (50)
-char msg[MSG_BUFFER_SIZE];
+// #define MSG_BUFFER_SIZE (50)
+// char msg[MSG_BUFFER_SIZE];
 
 int airQualityValue;  // Valore di qualità dell'aria simulato
 
