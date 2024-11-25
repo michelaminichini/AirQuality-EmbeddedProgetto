@@ -17,7 +17,7 @@ const DataComponent = () => {
         const responseData = await response.json();
 
         if (responseData.items) {
-          // Parsing dei dati ricevuti
+          // Dati vengono mappati in un formato che include queste caratteristiche
           const parsedData = responseData.items.map((item) => ({
             ESPname: item.ESPname,
             airQuality: item.airQuality,
@@ -25,7 +25,7 @@ const DataComponent = () => {
             timestamp: new Date().toISOString() // Aggiunge un timestamp
           }));
 
-          setData(parsedData);
+          setData(parsedData); // Aggiorna lo stato con i dati ottenuti
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,8 +37,9 @@ const DataComponent = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Aggiorna lo stato di "updatedMessages" ogni volta che "data" cambia
   useEffect(() => {
-    const updatedMap = new Map(updatedMessages.map(item => [item.ESPname, item]));
+    const updatedMap = new Map(updatedMessages.map(item => [item.ESPname, item])); // mappa che associa ogni ESPname all'ultimo messaggio di quel dispositivo per evitare duplicati
 
     data.forEach(item => {
       updatedMap.set(item.ESPname, item); // Aggiorna o aggiunge il messaggio
@@ -55,22 +56,6 @@ const DataComponent = () => {
     if (airQualityValue <= 200) return "Unhealthy air quality";
     if (airQualityValue <= 300) return "Very unhealthy air quality";
     return "Dangerous air quality"; // se il valore supera 301 (con un massimo di 400)
-  };
-
-  // Funzione per determinare la posizione della lancetta
-  const getNeedlePosition = (airQualityValue) => {
-    const maxRotation = 180; // Rotazione massima di 180 gradi
-    const maxValue = 400; // Valore massimo per la qualità dell'aria
-    const clampedValue = Math.min(Math.max(airQualityValue, 0), maxValue);  // Limita il valore entro il range [0, maxValue]
-
-    // Calcola la posizione della lancetta
-    const rotation = (clampedValue / maxValue) * maxRotation;
-
-    // Aggiungere 90 gradi per iniziare dalla posizione corretta (sinistra del semicerchio)
-    const adjustedRotation = rotation - 90;
-
-    console.log("Rotazione calcolata:", adjustedRotation);
-    return `rotate(${adjustedRotation}deg)`;
   };
 
   // Recupera il valore della qualità dell'aria dall'ultimo dato ricevuto
