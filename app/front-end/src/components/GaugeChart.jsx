@@ -1,9 +1,9 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart, ArcElement, Tooltip } from 'chart.js';
 
-// Registrazione degli elementi di Chart.js
-Chart.register(ArcElement, Tooltip, Legend);
+// Necessaria per registrare esplicitamente i componenti di Chart.js
+Chart.register(ArcElement, Tooltip);
 
 const GaugeChart = ({ airQuality }) => {
   // Logica per definire i colori basata sui range di qualità dell'aria
@@ -33,7 +33,7 @@ const GaugeChart = ({ airQuality }) => {
     cutout: '80%', // Lascia spazio nel centro per renderlo realistico
     plugins: {
       legend: {
-        display: false // Rimuovere la legenda
+        display: false // Disattiva la legenda perchè porterebbe ad una ridondanza delle informazioni
       }
     }
   };
